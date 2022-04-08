@@ -1,12 +1,13 @@
 package stepDefinitions;
 
+import cucumber.api.DataTable;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.Alert;
 
 import java.util.List;
 import java.util.Map;
@@ -186,7 +187,7 @@ public class SampleSteps {
     }
 
     @Then("^I see error message: \"([^\"]*)\"$")
-    public void  iSeeErrorMsg(String msg) throws Throwable {
+    public void iSeeErrorMsg(String msg) throws Throwable {
         assertEquals(msg, driver.findElement(By.id("ch1_error")).getText());
     }
 
@@ -195,7 +196,49 @@ public class SampleSteps {
         Alert alert = driver.switchTo().alert();
         assertEquals(message, alert.getText());
         alert.accept();
+    }
 
+    //Sample4
+    @When("^I select feedback languages$")
+    public void iSelectFeedbackLanguages(List<String> languages) throws Throwable {
+        for (String language : languages) {
+            driver.findElement(By.xpath("//input[@class='w3-check' and @value='" + language + "']")).click();
+        }
+    }
 
+    @Then("^I can see languages \"([^\"]*)\" in feedback check$")
+    public void iCanSeeLanguagesInFeedbackCheck(String languages) throws Throwable {
+        assertEquals(languages, driver.findElement(By.id("language")).getText());
+    }
+
+    //Sample5
+    @When(("^I enter input in feedback page$"))
+    public void iEnterInputInFeedback(Map<String, String> feedbackInput) throws Throwable {
+        /*driver.findElement(By.id("fb_name")).clear();
+        driver.findElement(By.id("fb_name")).sendKeys(feedbackInput.get("name"));
+        driver.findElement(By.id("fb_age")).clear();
+        driver.findElement(By.id("fb_age")).sendKeys(feedbackInput.get("age"));*/
+        if (feedbackInput.containsKey("name")) {
+            iEnterNameInFeedback(feedbackInput.get("name"));
+        }
+        iEnterAgeInFeedback(feedbackInput.get("age"));
+        driver.findElement(By.xpath("//input[@value='" + feedbackInput.get("genre") + "']")).click();
+    }
+
+    @When(("^I enter input in feedback page as data table$"))
+    public void iEnterInputInFeedback(DataTable inputTable) throws Throwable {
+        for (Map<String, String> feedbackInput : inputTable.asMaps(String.class, String.class)) {
+            if (feedbackInput.containsKey("name")) {
+                iEnterNameInFeedback(feedbackInput.get("name"));
+            }
+            iEnterAgeInFeedback(feedbackInput.get("age"));
+            driver.findElement(By.xpath("//input[@value='" + feedbackInput.get("genre") + "']")).click();
+        }
     }
 }
+
+
+
+
+
+

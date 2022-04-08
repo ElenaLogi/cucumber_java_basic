@@ -8,6 +8,7 @@ import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.chrome.ChromeDriver;
+import io.github.bonigarcia.wdm.WebDriverManager;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -23,6 +24,7 @@ public class Hooks {
             System.setProperty("webdriver.chrome.driver", libWithDriversLocation + "chromedriver");
         else
             System.setProperty("webdriver.chrome.driver", libWithDriversLocation + "chromedriver.exe");
+        WebDriverManager.chromedriver().setup();
         driver = new ChromeDriver();
         driver.manage().deleteAllCookies();
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);

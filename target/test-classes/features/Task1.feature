@@ -27,7 +27,7 @@
         And I click submit button
         Then I see alert message: "<result>"
         Examples:
-          | number | result                    |
-          | 60     | Square root of 60 is 7.75 |
+          | number |
+          | 60     |
 
 
